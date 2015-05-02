@@ -4,7 +4,9 @@ Created on Apr 25, 2015
 @author: eytan
 '''
 
+from django.contrib.auth.models import User
 from django.test.testcases import TestCase
+
 
 class AbstractModelTest(TestCase):
     def setUp(self):
@@ -42,3 +44,12 @@ class ABstractDBEnumerationTestCase(AbstractModelTest):
         self._test()
         self.assertEqual(0, self.model.objects.default.pk)
         self.assertEqual(self.model.default_name, self.model.objects.default.name)
+        
+class LoginTestCase(TestCase):
+    def setUp(self):
+        TestCase.setUp(self)
+        User.objects.create_superuser('eytan', 'a@x.com', 'test')
+        login_successful = self.client.login(username="eytan",password="test")
+        self.assertTrue(login_successful)
+
+

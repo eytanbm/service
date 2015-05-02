@@ -12,13 +12,8 @@ import os
 from service_calls.content.models.guest import Guest
 from service_calls.content.models.location import Location
 from service_calls.settings import BASE_DIR
+from service_calls.utils.testing import LoginTestCase
 
-class LoginTestCase(TestCase):
-    def setUp(self):
-        TestCase.setUp(self)
-        User.objects.create_superuser('eytan', 'a@x.com', 'test')
-        login_successful = self.client.login(username="eytan",password="test")
-        self.assertTrue(login_successful)
 
 class TestLoadGuests(LoginTestCase):
     

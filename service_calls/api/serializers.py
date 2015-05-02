@@ -17,13 +17,13 @@ class TicketSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Ticket
-    
-    
-    
+     
+     
+     
 class TicketDetailSerializer(serializers.ModelSerializer):
-       
+        
     content = ContentDetailSerializer(many=False)
-    
+     
     class Meta:
         model = Ticket
     
