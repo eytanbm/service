@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import sys
+import local_settings as LOCAL
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -67,17 +68,7 @@ WSGI_APPLICATION = 'service_calls.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'service-calls',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'eytan',
-        'PASSWORD': 'ttq1w2e3RR',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
-    }
-}
+DATABASES = LOCAL.DATABASES
 
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
