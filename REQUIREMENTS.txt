@@ -1,0 +1,4 @@
+djangorestframework < 3
+six
+django-grappelli
+psycopg2
