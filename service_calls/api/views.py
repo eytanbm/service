@@ -48,7 +48,7 @@ class TicketHistory(generics.ListAPIView):
         # Note the use of `get_queryset()` instead of `self.queryset`
         user = request.user
         queryset = TicketEvent.objects.filter(ticket=Ticket.objects.get(pk=pk)).all()
-        serializer = self.settings(queryset, many=True)
+        serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
     
 @csrf_exempt  
