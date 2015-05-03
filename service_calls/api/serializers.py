@@ -26,4 +26,5 @@ class TicketDetailSerializer(serializers.ModelSerializer):
      
     class Meta:
         model = Ticket
+
     

@@ -3,18 +3,20 @@ Created on Apr 18, 2015
 
 @author: eytan
 '''
-import django.utils.timezone
+from django.contrib.auth.models import User
 from django.db import models
+import django.utils.timezone
 from django.utils.translation import ugettext_lazy as _
+
 from service_calls.models.ticket import Ticket
 from service_calls.models.ticket_role import TicketRole
 
 
-class TicketEevent(models.Model):
+class TicketEvent(models.Model):
     
     ticket = models.ForeignKey(Ticket, related_name="events")
     timestamp = models.DateTimeField(default=django.utils.timezone.now())
-    by = models.ForeignKey(TicketRole)
+    by = models.ForeignKey(User)
 
     class Meta:
         app_label = "service_calls"
@@ -24,7 +26,7 @@ class TicketEevent(models.Model):
 
 class TicketAttrChange(models.Model):
     
-    event = models.ForeignKey(TicketEevent, related_name="atrributes")
+    event = models.ForeignKey(TicketEvent, related_name="atrributes")
     attr = models.CharField(max_length=40)
     value = models.CharField(max_length=120)
 

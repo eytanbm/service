@@ -8,6 +8,7 @@ from rest_framework import serializers
 from service_calls.content.models.content import Content
 from service_calls.content.models.guest import Guest
 from service_calls.content.models.location import Location
+from service_calls.models.ticket_event import TicketAttrChange
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -43,4 +44,16 @@ class ContentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Content
         fields = ("id", "guest", "location")
+        
+class TicketAttrChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TicketAttrChange
+        
+class TicketEventSerializer(serializers.ModelSerializer):
+    
+    atrributes = TicketAttrChangeSerializer(many=True)
+    
+    class Meta:
+        model = TicketAttrChange
+    
                 
