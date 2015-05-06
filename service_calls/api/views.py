@@ -12,11 +12,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from service_calls.api.serializers import TicketSerializer, \
-    TicketDetailSerializer
+    TicketDetailSerializer, FaultSerializer
+from service_calls.content.serializers import TicketEventSerializer
+from service_calls.models.fault import Fault
 from service_calls.models.ticket import Ticket
 from service_calls.models.ticket_event import TicketEvent, TicketAttrChange
 from service_calls.models.ticket_role import TicketRole
-from service_calls.content.serializers import TicketEventSerializer
+from service_calls.utils.gui import safe_upload
 
 
 class TicketList(generics.ListAPIView):
@@ -88,6 +90,10 @@ def record_ticket_event(ticket, request):
     data = request.DATA
     changes = [TicketAttrChange(event=event, attr=attr, value=str(data.get(attr))) for attr in data.keys()]
     TicketAttrChange.objects.bulk_create(changes)
+    
+@api_view(['POST'])
+def load_faults(request):
+    return safe_upload(request, Fault, FaultSerializer)
     
 
     

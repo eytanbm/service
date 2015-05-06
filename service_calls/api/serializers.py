@@ -13,6 +13,10 @@ from service_calls.models.ticket import Ticket
 
 
 class FaultSerializer(serializers.ModelSerializer):
+
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop('many', True)
+        super(FaultSerializer, self).__init__(many=many, *args, **kwargs)
     
     class Meta:
         model=Fault
@@ -34,5 +38,7 @@ class TicketDetailSerializer(serializers.ModelSerializer):
      
     class Meta:
         model = Ticket
+        
+
 
     
