@@ -6,9 +6,11 @@ Created on Apr 18, 2015
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from service_calls.models.ticket_role import TicketRole
-from service_calls.content import TICKET_TYPE, TICKET_PRIORITY, TICKET_STATUS,\
+from service_calls.content import TICKET_TYPE, TICKET_PRIORITY, TICKET_STATUS, \
     TICKET_SOURCE
+from service_calls.models.fault import Fault
+from service_calls.models.ticket_role import TicketRole
+
 
 class Ticket(models.Model):
 
@@ -17,6 +19,7 @@ class Ticket(models.Model):
     priority = models.IntegerField(choices=TICKET_PRIORITY.to_choices(), default=TICKET_PRIORITY.Normal)    
     status = models.IntegerField(choices=TICKET_STATUS.to_choices(), default=TICKET_STATUS.Reported)  
     owner = models.ForeignKey(TicketRole, null=True, blank=True, related_name="tickets")
+    fault = models.ForeignKey(Fault, null=True, blank=True, related_name="tickets")
     
     class Meta:
         app_label = "service_calls"

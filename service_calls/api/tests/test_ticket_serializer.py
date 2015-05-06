@@ -27,7 +27,7 @@ class TestTicketSerializer(TestCase):
         self.maxDiff=None
         self.serializer = TicketSerializer
         self.fixture = UpdateTicketFixture()
-        
+       
     def test_retrieve(self):
         queryset = Ticket.objects.all()
         serializer = TicketDetailSerializer(queryset, many=True)

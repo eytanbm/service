@@ -10,6 +10,7 @@ from service_calls.content.models.guest import Guest
 from service_calls.content.models.location import Location
 from service_calls.models.ticket import Ticket
 from service_calls.models.ticket_role import TicketRole
+from service_calls.models.fault import Fault
 
 
 class UpdateTicketFixture(object):
@@ -20,9 +21,11 @@ class UpdateTicketFixture(object):
                                    id=indx,
                                    guest=Guest.objects.create(id=indx, first_name="guest%d" % indx, last_name="gutsy%d" % indx, room=indx),
                                    location=Location.objects.create(id=indx, other_location="Restaurant on %d floor" % indx),
-                                   ticket=Ticket.objects.create(id=indx, owner=TicketRole.objects.create(id=indx, user=User.objects.create_user(username="user%d" % indx, password="xxxx")))
+                                   ticket=Ticket.objects.create(id=indx, \
+                                                                owner=TicketRole.objects.create(id=indx, user=User.objects.create_user(username="user%d" % indx, password="xxxx")), \
+                                                                fault=Fault.objects.create(id=indx, name="Fault number %d" % indx))
                                    )
-            self.expected_data[indx] = {u'id': indx,u'owner': indx,u'priority': 2,u'source': 2,u'status': 1,u'type': 1,
+            self.expected_data[indx] = {u'id': indx,u'owner': indx,u'priority': 2,u'source': 2,u'status': 1,u'type': 1, u'fault': indx,
                                         u'content': {u'guest': {u'id':indx, u'first_name':u'guest%d' % indx, u'last_name':u'gutsy%d' % indx, u'room':indx},
                                                      u'location':{u'id':indx, u'other_location': u'Restaurant on %d floor' % indx, u'room_number':None}, u'id':indx}
                                        }
