@@ -9,14 +9,13 @@ import django.utils.timezone
 from django.utils.translation import ugettext_lazy as _
 
 from service_calls.models.ticket import Ticket
-from service_calls.models.ticket_role import TicketRole
 
 
 class TicketEvent(models.Model):
     
-    ticket = models.ForeignKey(Ticket, related_name="events")
+    ticket = models.ForeignKey(Ticket, related_name="history")
     timestamp = models.DateTimeField(default=django.utils.timezone.now())
-    by = models.ForeignKey(User)
+    by = models.ForeignKey(User, null=True, blank=True)
 
     class Meta:
         app_label = "service_calls"
@@ -28,7 +27,8 @@ class TicketAttrChange(models.Model):
     
     event = models.ForeignKey(TicketEvent, related_name="atrributes")
     attr = models.CharField(max_length=40)
-    value = models.CharField(max_length=120)
+    from_value = models.CharField(max_length=120, default="None")
+    to_value = models.CharField(max_length=120, default="None")
 
     class Meta:
         app_label = "service_calls"

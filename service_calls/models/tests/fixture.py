@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 import random
 
 from service_calls.content import TICKET_ROLE, TICKET_TYPE
-from service_calls.models.fault import Fault
+from service_calls.content.models.fault import Fault
 from service_calls.models.ticket import Ticket
 from service_calls.models.ticket_role import TicketRole
 
@@ -25,7 +25,7 @@ class ModelTestFixture(object):
             Fault.objects.bulk_create(faults)
         def create_tickets():
             owner = TicketRole.objects.get_or_create(role=TICKET_ROLE.Manager, user=self.users[0])[0]
-            tickets = [Ticket(owner=owner, type=random.choice([x[0] for x in TICKET_TYPE.to_choices()]), fault=random.choice(Fault.objects.all())) for i in xrange(100)]
+            tickets = [Ticket(owner=owner, type=random.choice([x[0] for x in TICKET_TYPE.to_choices()])) for i in xrange(100)]
             Ticket.objects.bulk_create(tickets)
         create_roles()
         create_faults()

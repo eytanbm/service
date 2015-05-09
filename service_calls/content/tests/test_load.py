@@ -24,7 +24,7 @@ class TestLoadGuests(LoginTestCase):
 
             
     def test(self):
-        response = self.client.post("/content/guests/load", json.dumps(self.data), content_type="application/json")
+        response = self.client.post("/content/guests/load/", json.dumps(self.data), content_type="application/json")
         self.assertEqual(len(self.data), len(Guest.objects.all()))
         for d in self.data:
             self.assertTrue(Guest.objects.filter(**d).exists())
@@ -39,7 +39,7 @@ class TestLoadLocations(LoginTestCase):
                 self.data.append({"room_number":int("%d%003d" % (floor, room))})
             self.data.append({"other_location":"Laundry room floor: %d" % floor})
     def test(self):
-        self.client.post("/content/locations/load", json.dumps(self.data), content_type="application/json")
+        self.client.post("/content/locations/load/", json.dumps(self.data), content_type="application/json")
         self.assertEqual(len(self.data), len(Location.objects.all()))
         for d in self.data:
             self.assertTrue(Location.objects.filter(**d).exists())

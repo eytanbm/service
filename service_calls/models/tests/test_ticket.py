@@ -3,6 +3,8 @@ Created on Apr 24, 2015
 
 @author: eytan
 '''
+import random
+
 from service_calls.models.tests.fixture import ModelTestFixture
 from service_calls.models.ticket import Ticket
 from service_calls.models.ticket_role import TicketRole, TICKET_ROLE
@@ -15,8 +17,10 @@ class TestTicket(AbstractModelTest):
         self.model = Ticket
         fixture = ModelTestFixture()
         self.data = {"owner": TicketRole.objects.get_or_create(user=fixture.users[0], role=TICKET_ROLE.Manager)[0]}
-        self.update_data = {"owner": TicketRole.objects.create(user=fixture.users[1], role=TICKET_ROLE.Dispatcher)}
+        self.update_data = {"owner": TicketRole.objects.get_or_create(user=fixture.users[1], role=TICKET_ROLE.Dispatcher)[0]}
         AbstractModelTest.setUp(self)
         
     def test(self):
         self._test()
+        
+        

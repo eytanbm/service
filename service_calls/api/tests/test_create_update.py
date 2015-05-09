@@ -20,7 +20,7 @@ class TestCreateTicket(LoginTestCase):
              
     def test(self):
         response = self.client.post("/api/ticket/create/", json.dumps(self.fixture.data), content_type="application/json")
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(201, response.status_code)
         
 class TestUpdateTicket(LoginTestCase):
     def setUp(self):
@@ -29,7 +29,7 @@ class TestUpdateTicket(LoginTestCase):
         
     def test(self):
         pk = self.fixture.ticket.id
-        response = self.client.post("/api/ticket/update/%d" % pk, json.dumps(self.fixture.data), content_type="application/json")
+        response = self.client.put("/api/ticket/update/%d" % pk, json.dumps(self.fixture.data), content_type="application/json")
         self.assertEqual(200, response.status_code)
         updated_ticket = Ticket.objects.get(pk=pk)
         self.assertEqual(updated_ticket.owner.user.username, "new_user1003")

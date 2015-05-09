@@ -5,20 +5,20 @@ Created on Apr 26, 2015
 '''
 
 from django.db.transaction import atomic
-from django.http.response import Http404, HttpResponse
+from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics, permissions
 from rest_framework.decorators import api_view
+from rest_framework.generics import CreateAPIView, UpdateAPIView, ListAPIView
 from rest_framework.response import Response
 
 from service_calls.api.serializers import TicketSerializer, \
-    TicketDetailSerializer, FaultSerializer
+    TicketDetailSerializer, TicketCommentSerializer
 from service_calls.content.serializers import TicketEventSerializer
-from service_calls.models.fault import Fault
 from service_calls.models.ticket import Ticket
-from service_calls.models.ticket_event import TicketEvent, TicketAttrChange
+from service_calls.models.ticket_comment import TicketComment
 from service_calls.models.ticket_role import TicketRole
-from service_calls.utils.gui import safe_upload
+from service_calls.models.ticket_event import TicketEvent
 
 
 class TicketList(generics.ListAPIView):
@@ -38,62 +38,42 @@ class TicketList(generics.ListAPIView):
         return Response(serializer.data)
     
 class TicketHistory(generics.ListAPIView):
-    
+     
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    
+     
     serializer_class = TicketEventSerializer
-
+ 
     def get_queryset(self, pk):
-        return TicketEvent.objects.all()
-    
+        return TicketEvent.objects.filter(ticket=Ticket.objects.get(pk=pk)).all()
+     
     def list(self, request, pk):
         # Note the use of `get_queryset()` instead of `self.queryset`
         user = request.user
-        queryset = TicketEvent.objects.filter(ticket=Ticket.objects.get(pk=pk)).all()
+        queryset = self.get_queryset(pk)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
+
+
+ 
+class CreateTicketView(CreateAPIView):
+    model = Ticket
+    serializer_class = TicketSerializer
     
-@csrf_exempt  
-@api_view(['POST'])    
-def create_ticket(request):
-    serializer = TicketSerializer(data=request.DATA, many=False)
-    try:
-        if serializer.is_valid():
-            instance = serializer.save()
-            return HttpResponse("Created")
-        else:
-            return HttpResponse(serializer.error_messages, status=400)
-    except Exception as e:
-        return HttpResponse(str(e), status=500)
-    finally:
-        record_ticket_event(serializer.object, request)
-@csrf_exempt  
-@api_view(['POST'])    
-def update_ticket(request, pk):
-    try:
-        ticket = Ticket.objects.get(pk=pk)
-        serializer = TicketSerializer(ticket, data=request.DATA, many=False)
-        if serializer.is_valid():
-            serializer.save()
-            return HttpResponse("Updated")
-        else:
-            return HttpResponse(serializer.error_messages, status=400)
-    except Ticket.DoesNotExist:
-        return HttpResponse("Ticket not found! - pk: %d" % pk, status=400)
-    except Exception as e:
-        return HttpResponse(str(e), status=500)
-    finally:
-        record_ticket_event(serializer.object, request)
-@atomic    
-def record_ticket_event(ticket, request):
-    event = TicketEvent.objects.create(ticket=ticket, by=request.user)
-    data = request.DATA
-    changes = [TicketAttrChange(event=event, attr=attr, value=str(data.get(attr))) for attr in data.keys()]
-    TicketAttrChange.objects.bulk_create(changes)
+class UpdateTicketView(UpdateAPIView):
+#     model = Ticket
+    queryset = Ticket.objects.all()
+    serializer_class = TicketSerializer
     
+class AddTicketComment(CreateAPIView):
+    model = TicketComment
+    serializer_class = TicketCommentSerializer
+        
 @api_view(['POST'])
-def load_faults(request):
-    return safe_upload(request, Fault, FaultSerializer)
+def ticket_comments(request, pk):
+    ticket = Ticket.objects.get(pk=pk)
+    serializer = TicketCommentSerializer(ticket.comments.all(), many=True)
+    return Response(serializer.data)
+    
     
 
     

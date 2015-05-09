@@ -48,7 +48,7 @@ class ABstractDBEnumerationTestCase(AbstractModelTest):
 class LoginTestCase(TestCase):
     def setUp(self):
         TestCase.setUp(self)
-        User.objects.create_superuser('eytan', 'a@x.com', 'test')
+        self.user = User.objects.create_superuser('eytan', 'a@x.com', 'test')
         login_successful = self.client.login(username="eytan",password="test")
         self.assertTrue(login_successful)
 

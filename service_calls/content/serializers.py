@@ -6,9 +6,10 @@ Created on Apr 29, 2015
 from rest_framework import serializers
 
 from service_calls.content.models.content import Content
+from service_calls.content.models.fault import Fault
 from service_calls.content.models.guest import Guest
 from service_calls.content.models.location import Location
-from service_calls.models.ticket_event import TicketAttrChange
+from service_calls.models.ticket_event import TicketAttrChange, TicketEvent
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -29,6 +30,15 @@ class GuestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Guest
         
+class FaultSerializer(serializers.ModelSerializer):
+
+    def __init__(self, *args, **kwargs):
+        many = kwargs.pop('many', True)
+        super(FaultSerializer, self).__init__(many=many, *args, **kwargs)
+    
+    class Meta:
+        model=Fault
+        
 class ContentSerializer(serializers.ModelSerializer):
 #     guest = serializers.PrimaryKeyRelatedField()
 #     location = serializers.PrimaryKeyRelatedField()
@@ -40,6 +50,7 @@ class ContentSerializer(serializers.ModelSerializer):
 class ContentDetailSerializer(serializers.ModelSerializer):
     guest = GuestSerializer(many=False)
     location = LocationSerializer(many=False)
+    fault = FaultSerializer(many=False)
     
     class Meta:
         model = Content
@@ -54,6 +65,6 @@ class TicketEventSerializer(serializers.ModelSerializer):
     atrributes = TicketAttrChangeSerializer(many=True)
     
     class Meta:
-        model = TicketAttrChange
+        model = TicketEvent
     
                 

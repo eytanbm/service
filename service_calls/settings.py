@@ -38,8 +38,8 @@ from service_calls import content as CONTENT
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'grappelli',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

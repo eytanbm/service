@@ -7,7 +7,7 @@ import random
 
 from service_calls.content import TICKET_ROLE, TICKET_STATUS
 from service_calls.models.tests.fixture import ModelTestFixture
-from service_calls.models.ticket_event import TicketAttrChange, TicketEvent
+from service_calls.models.ticket_event import  TicketEvent, TicketAttrChange
 from service_calls.models.ticket_role import TicketRole
 from service_calls.utils.testing import AbstractModelTest
 
@@ -31,8 +31,8 @@ class TestTicketAttrChange(AbstractModelTest):
         self.model = TicketAttrChange
         fixture = ModelTestFixture()
         event = TicketEvent.objects.create(ticket=fixture.random_ticket(), by=fixture.random_role().user)
-        self.data = {"event":event, "attr":"status", "value":str(TICKET_STATUS.Done)}
-        self.update_data = {"value":str(TICKET_STATUS.Closed)}
+        self.data = {"event":event, "attr":"status", "from_value":str(TICKET_STATUS.Done)}
+        self.update_data = {"to_value":str(TICKET_STATUS.Closed)}
         AbstractModelTest.setUp(self)
         
     def test(self):

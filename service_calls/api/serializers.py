@@ -8,23 +8,17 @@ from rest_framework import serializers
 
 from service_calls.content.serializers import ContentSerializer, \
     ContentDetailSerializer
-from service_calls.models.fault import Fault
 from service_calls.models.ticket import Ticket
+from service_calls.models.ticket_comment import TicketComment
 
-
-class FaultSerializer(serializers.ModelSerializer):
-
-    def __init__(self, *args, **kwargs):
-        many = kwargs.pop('many', True)
-        super(FaultSerializer, self).__init__(many=many, *args, **kwargs)
-    
+class TicketCommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Fault
-        
+        model = TicketComment
+    
+
 class TicketSerializer(serializers.ModelSerializer):
        
     content = ContentSerializer(many=False)
-    fault = FaultSerializer
     
     class Meta:
         model = Ticket
@@ -34,7 +28,6 @@ class TicketSerializer(serializers.ModelSerializer):
 class TicketDetailSerializer(serializers.ModelSerializer):
         
     content = ContentDetailSerializer(many=False)
-    fault = FaultSerializer
      
     class Meta:
         model = Ticket
