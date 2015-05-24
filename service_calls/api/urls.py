@@ -5,6 +5,7 @@ Created on Apr 29, 2015
 '''
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import login, logout
 from django.views.decorators.csrf import csrf_exempt
 
 from service_calls.api.views import TicketList, TicketHistory, \
@@ -12,7 +13,7 @@ from service_calls.api.views import TicketList, TicketHistory, \
 
 
 def secure_func(func):
-    return login_required(csrf_exempt(func))
+    return login_required(func)
 
 urlpatterns = patterns('service_calls.content.views',
     url(r'^tickets/$', secure_func(TicketList.as_view()), name='tickets_list'),
@@ -21,4 +22,6 @@ urlpatterns = patterns('service_calls.content.views',
     url(r'^ticket/history/(?P<pk>[0-9]+)$', secure_func(TicketHistory.as_view()), name='ticket_history'),   
     url(r'^ticket/add_comment/$', secure_func(AddTicketComment.as_view()), name='ticket_add_comment'),   
     url(r'^ticket/comments/(?P<pk>[0-9]+)$', secure_func(ticket_comments), name='ticket_comments'),   
+    url(r'^login/$', login, {'template_name': 'login.html'}),   
+    url(r'^logout/$', logout),   
     )

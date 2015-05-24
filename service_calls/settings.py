@@ -60,6 +60,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
 ROOT_URLCONF = 'service_calls.urls'
 
 WSGI_APPLICATION = 'service_calls.wsgi.application'
@@ -93,7 +95,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_URL = '/api-auth/login/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+LOGIN_URL = '/api/login/'
+
+TEMPLATE_DIRS = (os.path.join(STATIC_ROOT, "templates"),)
 
 # REST_FRAMEWORK = {
 #     # Use Django's standard `django.contrib.auth` permissions,
