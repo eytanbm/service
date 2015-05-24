@@ -101,6 +101,7 @@ LOGIN_URL = '/api/login/'
 
 TEMPLATE_DIRS = (os.path.join(STATIC_ROOT, "templates"),)
 
+LOGIN_REDIRECT_URL = '/api/tickets'
 # REST_FRAMEWORK = {
 #     # Use Django's standard `django.contrib.auth` permissions,
 #     # or allow read-only access for unauthenticated users.
