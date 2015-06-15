@@ -22,6 +22,6 @@ urlpatterns = patterns('service_calls.content.views',
     url(r'^ticket/history/(?P<pk>[0-9]+)$', secure_func(TicketHistory.as_view()), name='ticket_history'),   
     url(r'^ticket/add_comment/$', secure_func(AddTicketComment.as_view()), name='ticket_add_comment'),   
     url(r'^ticket/comments/(?P<pk>[0-9]+)$', secure_func(ticket_comments), name='ticket_comments'),   
-    url(r'^login/$', login, {'template_name': 'login.html'}),   
+    url(r'^login/$', csrf_exempt(login), {'template_name': 'login.html'}),   
     url(r'^logout/$', logout),   
     )

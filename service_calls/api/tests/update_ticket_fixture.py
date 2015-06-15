@@ -26,7 +26,7 @@ class UpdateTicketFixture(object):
                                                                 )
                                    )
             self.expected_data[indx] = {u'id': indx,u'owner': indx,u'priority': 2,u'source': 2,u'status': 1,u'type': 1,
-                                        u'content': {u'guest': {u'id':indx, u'first_name':u'guest%d' % indx, u'last_name':u'gutsy%d' % indx, u'room':indx},
+                                        u'content': {u'guest': {u'id':indx, u'first_name':u'guest%d' % indx, u'last_name':u'gutsy%d' % indx, u'room':indx, u'arrival':None, u'departure':None},
                                                      u'location':{u'id':indx, u'other_location': u'Restaurant on %d floor' % indx, u'room_number':None}, u'id':indx}
                                        }
         self.ticket = Ticket.objects.get(pk=1003)

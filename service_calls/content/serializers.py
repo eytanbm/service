@@ -66,5 +66,3 @@ class TicketEventSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = TicketEvent
-    
-                

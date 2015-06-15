@@ -10,6 +10,7 @@ from service_calls.content.models.fault import Fault
 from service_calls.content.models.guest import Guest
 from service_calls.content.models.location import Location
 from service_calls.models.ticket import Ticket
+from service_calls.content import TICKET_SOURCE
 
 
 class Content(models.Model):

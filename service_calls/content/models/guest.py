@@ -12,6 +12,8 @@ class Guest(models.Model):
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
     room = models.IntegerField(null=True, blank=True)
+    arrival = models.DateTimeField(null=True, blank=True)
+    departure = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         app_label = "content"
