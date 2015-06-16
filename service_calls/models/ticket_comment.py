@@ -16,7 +16,7 @@ class TicketComment(models.Model):
     
     ticket = models.ForeignKey(Ticket, related_name="comments")
     commentor = models.ForeignKey(TicketRole, null=True, blank=True, related_name="comments")
-    timestamp = models.DateTimeField(default=pytz.utc.localize(datetime.now()))
+    timestamp = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
     
     class Meta:
