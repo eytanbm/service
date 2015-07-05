@@ -32,12 +32,19 @@ TICKET_ROLE = Enumeration(
                                 (u'Assignee',   _(u'Assignee')),
                           )  
 
+TICKET_DEPARTMENT = Enumeration(
+                                (u'Maintenance',    _(u'Maintenance')),
+                                (u'Service',        _(u'Service')),
+                                (u'PR',             _(u'PR')),
+                          )  
+
 TICKET_STATIC_DATA = {
                u'TICKET_TYPE':dict(TICKET_TYPE.to_choices()),
                u'TICKET_SOURCE':dict(TICKET_SOURCE.to_choices()),
                u'TICKET_PRIORITY':dict(TICKET_PRIORITY.to_choices()),
                u'TICKET_STATUS':dict(TICKET_STATUS.to_choices()),
                u'TICKET_ROLE':dict(TICKET_ROLE.to_choices()),
+              u'TICKET_DEPARTMENT':dict(TICKET_DEPARTMENT.to_choices()),
                }
 
 __all__ = [
@@ -47,6 +54,7 @@ __all__ = [
            'TICKET_PRIORITY',
            'TICKET_STATUS',
            'TICKET_ROLE',
+           'TICKET_DEPARTMENT',
            'TICKET_STATIC_DATA',
            ]
 

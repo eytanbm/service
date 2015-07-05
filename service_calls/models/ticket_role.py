@@ -8,7 +8,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from service_calls.utils.enumeration import Enumeration
-from service_calls.content import TICKET_ROLE
+from service_calls.content import TICKET_ROLE, TICKET_DEPARTMENT
 
 
 class TicketRoleManager(models.Manager):
@@ -29,6 +29,7 @@ class TicketRole(models.Model):
     
     user = models.ForeignKey(User, related_name="ticket_roles")
     role = models.IntegerField(choices=TICKET_ROLE.to_choices(), default=TICKET_ROLE.Manager)
+    department = models.IntegerField(choices=TICKET_DEPARTMENT.to_choices(), default=TICKET_DEPARTMENT.Service)
     
     objects = TicketRoleManager()
     
@@ -41,3 +42,12 @@ class TicketRole(models.Model):
 
     def __unicode__(self):
         return u'%s(%s)' % (TICKET_ROLE.name(self.role), self.user.username)
+    
+    @property
+    def first_name(self):
+        return self.user.first_name
+    
+    @property
+    def last_name(self):
+        return self.user.last_name
+    

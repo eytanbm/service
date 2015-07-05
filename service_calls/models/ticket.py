@@ -23,6 +23,12 @@ class Ticket(models.Model):
     priority = models.IntegerField(choices=TICKET_PRIORITY.to_choices(), default=TICKET_PRIORITY.Normal)    
     status = models.IntegerField(choices=TICKET_STATUS.to_choices(), default=TICKET_STATUS.Reported)  
     owner = models.ForeignKey(TicketRole, null=True, blank=True, related_name="tickets")
+    initiator = models.ForeignKey(TicketRole, null=False, blank=False, related_name="initiated_tickets")
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    planned_start = models.DateTimeField(null=True, blank=True)
+    actual_start = models.DateTimeField(null=True, blank=True)
+    actual_end = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         app_label = "service_calls"

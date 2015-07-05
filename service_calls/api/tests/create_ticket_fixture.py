@@ -17,8 +17,8 @@ class CreateTicketFixture(object):
         new_location = Location.objects.create(id=1005, other_location="Restaurant on 101 floor")
         self.data = {
 #                 "id":1005,
-                "owner":new_owner.id
-                ,
+                "owner":new_owner.id,
+                "initiator":new_owner.id,
                 "content":{"id":1005, "guest":new_guest.id, "location":new_location.id}
                 }
 

@@ -35,6 +35,8 @@ class TestTicketSerializer(TestCase):
         for indx in xrange(count):
             d = serializer.data[indx]
             id = d[u'id']
+            d[u'created'] = d[u'created'].isoformat()
+            d[u'updated'] = d[u'updated'].isoformat()
             serializer_data = loads(dumps(d))
             expected_data = self.fixture.expected_data[id]
             self.assertEqual(serializer_data, expected_data)

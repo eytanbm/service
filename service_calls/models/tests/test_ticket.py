@@ -16,7 +16,8 @@ class TestTicket(AbstractModelTest):
     def setUp(self):
         self.model = Ticket
         fixture = ModelTestFixture()
-        self.data = {"owner": TicketRole.objects.get_or_create(user=fixture.users[0], role=TICKET_ROLE.Manager)[0]}
+        owner = TicketRole.objects.get_or_create(user=fixture.users[0], role=TICKET_ROLE.Manager)[0]
+        self.data = {"owner": owner, 'initiator': owner}
         self.update_data = {"owner": TicketRole.objects.get_or_create(user=fixture.users[1], role=TICKET_ROLE.Dispatcher)[0]}
         AbstractModelTest.setUp(self)
         

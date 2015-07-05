@@ -9,7 +9,8 @@ from django.contrib.auth.views import login, logout
 from django.views.decorators.csrf import csrf_exempt
 
 from service_calls.api.views import TicketList, TicketHistory, \
-    CreateTicketView, UpdateTicketView, ticket_comments, AddTicketComment
+    CreateTicketView, UpdateTicketView, ticket_comments, AddTicketComment, \
+    user_info, role_info
 
 
 def secure_func(func):
@@ -24,4 +25,6 @@ urlpatterns = patterns('service_calls.content.views',
     url(r'^ticket/comments/(?P<pk>[0-9]+)$', secure_func(ticket_comments), name='ticket_comments'),   
     url(r'^login/$', csrf_exempt(login), {'template_name': 'login.html'}),   
     url(r'^logout/$', logout),   
+    url(r'^user/(?P<username>\w+)$', csrf_exempt(user_info), name='user_info'),   
+    url(r'^role/(?P<role_id>[0-9]+)$', csrf_exempt(role_info), name='role_name'),   
     )
