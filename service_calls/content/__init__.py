@@ -1,6 +1,7 @@
 from service_calls.utils.enumeration import Enumeration
 from django.utils.translation import ugettext_lazy as _
 
+
 TICKET_TYPE = Enumeration(
                                 (u'Problem',    _(u'Problem Report')),
                           )
@@ -25,6 +26,12 @@ TICKET_STATUS = Enumeration(
                                 (u'Done',       _(u'Done')),
                                 (u'Closed',     _(u'Closed')),
                             )
+
+# TICKET_SLA = {
+#               TICKET_STATUS.Created: 3,
+#               TICKET_STATUS.Assigned: 3,
+#               TICKET_STATUS.CREATED: 3,              
+#               }
 
 TICKET_ROLE = Enumeration(
                                 (u'Manager',    _(u'Manager')),

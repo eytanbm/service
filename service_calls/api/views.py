@@ -68,6 +68,13 @@ class CreateTicketView(CreateAPIView):
     model = Ticket
     serializer_class = TicketSerializer
     
+    def post(self, request, *args, **kwargs):
+        if not request.DATA["initiator"]:
+            user = request.user
+            role = user.ticket_roles.all()[0]
+            request.DATA["initiator"] = role.id
+        return CreateAPIView.post(self, request, *args, **kwargs)
+    
 class UpdateTicketView(UpdateAPIView):
 #     model = Ticket
     queryset = Ticket.objects.all()
@@ -101,6 +108,23 @@ def user_info(request, username):
     except TicketRole.DoesNotExist:
         return HttpResponse(status = HTTP_403_FORBIDDEN)
     
+@api_view(['POST', 'GET'])
+def roles(request):
+    
+    if not request.user or not request.user.is_authenticated():
+        return HttpResponse(status = HTTP_403_FORBIDDEN)
+    
+    try:
+        data = [{'first_name': role.first_name, \
+                'last_name': role.last_name,\
+                'role': TICKET_ROLE.name(role.role),\
+                'department': TICKET_DEPARTMENT.name(role.department)} for role in TicketRole.objects.all()]
+        return HttpResponse(content = json.dumps(data), content_type="application/json", status=HTTP_200_OK)
+        
+    except TicketRole.DoesNotExist:
+        return HttpResponse(status = HTTP_403_FORBIDDEN)
+    
+        
 @api_view(['POST', 'GET'])
 def role_info(request, role_id):
     

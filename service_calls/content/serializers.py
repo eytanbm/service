@@ -54,7 +54,7 @@ class ContentDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Content
-        fields = ("id", "guest", "location")
+        fields = ("id", "guest", "location", "fault")
         
 class TicketAttrChangeSerializer(serializers.ModelSerializer):
     class Meta:
