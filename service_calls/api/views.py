@@ -118,7 +118,8 @@ def roles(request):
         data = [{'first_name': role.first_name, \
                 'last_name': role.last_name,\
                 'role': TICKET_ROLE.name(role.role),\
-                'department': TICKET_DEPARTMENT.name(role.department)} for role in TicketRole.objects.all()]
+                'department': TICKET_DEPARTMENT.name(role.department),
+                'id':role.id} for role in TicketRole.objects.all()]
         return HttpResponse(content = json.dumps(data), content_type="application/json", status=HTTP_200_OK)
         
     except TicketRole.DoesNotExist:

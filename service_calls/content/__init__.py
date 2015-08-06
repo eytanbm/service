@@ -28,7 +28,7 @@ TICKET_STATUS = Enumeration(
                             )
 
 # TICKET_SLA = {
-#               TICKET_STATUS.Created: 3,
+#               TICKET_STATUS.Created: lambda ticket: t,
 #               TICKET_STATUS.Assigned: 3,
 #               TICKET_STATUS.CREATED: 3,              
 #               }
