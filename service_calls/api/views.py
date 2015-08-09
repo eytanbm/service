@@ -69,7 +69,7 @@ class CreateTicketView(CreateAPIView):
     serializer_class = TicketSerializer
     
     def post(self, request, *args, **kwargs):
-        if not request.DATA["initiator"]:
+        if not "initiator" in request.DATA.keys():
             user = request.user
             role = user.ticket_roles.all()[0]
             request.DATA["initiator"] = role.id
