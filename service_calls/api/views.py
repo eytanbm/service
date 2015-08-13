@@ -80,6 +80,9 @@ class UpdateTicketView(UpdateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     
+    def post(self, request, *args, **kwargs):
+        return self.put(request, *args, **kwargs)
+    
 class AddTicketComment(CreateAPIView):
     model = TicketComment
     serializer_class = TicketCommentSerializer
