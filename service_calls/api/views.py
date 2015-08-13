@@ -81,6 +81,7 @@ class UpdateTicketView(UpdateAPIView):
     serializer_class = TicketSerializer
     
     def post(self, request, *args, **kwargs):
+        kwargs['partial'] = True
         return self.put(request, *args, **kwargs)
     
 class AddTicketComment(CreateAPIView):
