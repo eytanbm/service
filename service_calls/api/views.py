@@ -7,25 +7,32 @@ Created on Apr 26, 2015
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.views import login
+from django.forms.models import ModelForm
 from django.http.response import HttpResponse, Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import json
+import ntpath
+import os
 from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_403_FORBIDDEN, HTTP_200_OK
+import shutil
+import zipfile
 
 from service_calls.api.serializers import TicketSerializer, \
     TicketDetailSerializer, TicketCommentSerializer
 from service_calls.content import TICKET_ROLE, TICKET_DEPARTMENT
 from service_calls.content.serializers import TicketEventSerializer
+from service_calls.models.files import TicketFile, FILES_ROOT
 from service_calls.models.ticket import Ticket
 from service_calls.models.ticket_comment import TicketComment
 from service_calls.models.ticket_event import TicketEvent
 from service_calls.models.ticket_role import TicketRole
+from service_calls.settings import BASE_DIR
 
 
 class TicketList(generics.ListAPIView):
@@ -167,6 +174,51 @@ def role_info(request, role_id):
         
     except TicketRole.DoesNotExist:
         return HttpResponse(status = HTTP_403_FORBIDDEN)
-    
+
+class TicketFieldForm(ModelForm):
+    class Meta:
+        model = TicketFile
+        fields = ('ticket', 'file')
         
+    
+@api_view(['GET', 'POST'])    
+def upload_ticket_file(request,):    
+    if request.method == 'POST':
+        form = TicketFieldForm(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        form = TicketFieldForm()
+    return render(request, 'ticket_file_upload.html', {'form': form})
+        
+@api_view(['GET', 'POST'])
+def download_ticket_files(request):
+    def clean_folder(folder):
+        for path in os.listdir(folder):
+            file_path = os.path.join(folder, path)
+            try:
+                if os.path.isdir(file_path):
+                    shutil.rmtree(file_path, ignore_errors=True)
+            except Exception as e:
+                print e
+
+    def ticket_file_name(path):
+        ticket_dir, file_name = ntpath.split(path)
+        return "_".join([ntpath.split(ticket_dir)[1], file_name])
+
+    def zipdir(path, zip):
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                zip.write(file_path, arcname=ticket_file_name(file_path))
+
+    zip_filename = os.path.join(BASE_DIR, 'ticket_files.zip')
+    zipf = zipfile.ZipFile(zip_filename, 'w')
+    zipdir(FILES_ROOT, zipf)
+    zipf.close()
+    clean_folder(FILES_ROOT)
     

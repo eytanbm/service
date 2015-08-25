@@ -16,7 +16,7 @@ from service_calls.api.views import TicketList, TicketHistory, \
 def secure_func(func):
     return login_required(func)
 
-urlpatterns = patterns('service_calls.content.views',
+urlpatterns = patterns('service_calls.api.views',
     url(r'^alltickets/$', secure_func(AllTicketList.as_view()), name='all_tickets_list'),
     url(r'^tickets/$', secure_func(TicketList.as_view()), name='tickets_list'),
     url(r'^ticket/create/$', secure_func(CreateTicketView.as_view()), name='tickets_create'),
@@ -28,5 +28,8 @@ urlpatterns = patterns('service_calls.content.views',
     url(r'^logout/$', logout),   
     url(r'^user/(?P<username>\w+)$', csrf_exempt(user_info), name='user_info'),   
     url(r'^role/(?P<role_id>[0-9]+)$', csrf_exempt(role_info), name='role_name'),   
-    url(r'^roles/$', csrf_exempt(roles), name='roles'),   
+    url(r'^roles/$', csrf_exempt(roles), name='roles'), 
+    url(r'^files/$', 'upload_ticket_file', name='Ticket Files'),
+    url(r'^ticketfiles/$', 'download_ticket_files', name='Ticket Files Download'),
+      
     )
