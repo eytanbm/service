@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 import pytz
 
 from service_calls.content import TICKET_TYPE, TICKET_PRIORITY, TICKET_STATUS, \
-    TICKET_SOURCE
+    TICKET_SOURCE, TICKET_DEPARTMENT, TICKET_ROLE_STATUS
 from service_calls.models.ticket_role import TicketRole
 from service_calls.utils.track_changes import track_changes
 
@@ -58,6 +58,16 @@ class Ticket(models.Model):
     def __unicode__(self):
         return u'[%s]%s[%s]-%s' %(self.src, self.typ, self.sta, self.location)
     
+    @property
+    def department(self):
+        return TICKET_DEPARTMENT.name(self.owner.department)
+    
+    def __setattr__(self, name, value):
+        super(Ticket, self).__setattr__(name, value)
+        if name == 'owner_id' and value:
+            owner_role = TicketRole.objects.get(id=value).role
+            if owner_role in TICKET_ROLE_STATUS.keys():
+                super(Ticket, self).__setattr__('status', TICKET_ROLE_STATUS[owner_role])
     
     def _save_change_event(self):
         changes = self.whats_changed()

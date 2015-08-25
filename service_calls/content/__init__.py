@@ -26,7 +26,6 @@ TICKET_STATUS = Enumeration(
                                 (u'Done',       _(u'Done')),
                                 (u'Closed',     _(u'Closed')),
                             )
-
 # TICKET_SLA = {
 #               TICKET_STATUS.Created: lambda ticket: t,
 #               TICKET_STATUS.Assigned: 3,
@@ -38,6 +37,12 @@ TICKET_ROLE = Enumeration(
                                 (u'Dispatcher', _(u'Dispatcher')),
                                 (u'Assignee',   _(u'Assignee')),
                           )  
+
+TICKET_ROLE_STATUS = {
+                        TICKET_ROLE.Manager: TICKET_STATUS.Reported,
+                        TICKET_ROLE.Dispatcher: TICKET_STATUS.Dispatched,
+                        TICKET_ROLE.Assignee: TICKET_STATUS.Reported,
+                        }
 
 TICKET_DEPARTMENT = Enumeration(
                                 (u'Maintenance',    _(u'Maintenance')),
