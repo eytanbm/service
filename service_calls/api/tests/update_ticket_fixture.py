@@ -11,6 +11,7 @@ from service_calls.content.models.location import Location
 from service_calls.models.ticket import Ticket
 from service_calls.models.ticket_role import TicketRole
 from service_calls.content.models.fault import Fault
+from Tkconstants import YES
 
 
 class UpdateTicketFixture(object):
@@ -33,7 +34,7 @@ class UpdateTicketFixture(object):
                                         u'planned_start':None,\
                                         u'actual_start':None,\
                                         u'actual_end':None,\
-                                        u'content': {u'guest': {u'id':indx, u'first_name':u'guest%d' % indx, u'last_name':u'gutsy%d' % indx, u'room':indx, u'arrival':None, u'departure':None},
+                                        u'content': {u'fault': None, u'guest': {u'id':indx, u'first_name':u'guest%d' % indx, u'last_name':u'gutsy%d' % indx, u'room':indx, u'arrival':None, u'departure':None},
                                                      u'location':{u'id':indx, u'other_location': u'Restaurant on %d floor' % indx, u'room_number':None}, u'id':indx,\
                                                      }
                                        }

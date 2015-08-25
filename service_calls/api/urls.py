@@ -10,13 +10,14 @@ from django.views.decorators.csrf import csrf_exempt
 
 from service_calls.api.views import TicketList, TicketHistory, \
     CreateTicketView, UpdateTicketView, ticket_comments, AddTicketComment, \
-    user_info, role_info, roles
+    user_info, role_info, roles, AllTicketList
 
 
 def secure_func(func):
     return login_required(func)
 
 urlpatterns = patterns('service_calls.content.views',
+    url(r'^alltickets/$', secure_func(AllTicketList.as_view()), name='all_tickets_list'),
     url(r'^tickets/$', secure_func(TicketList.as_view()), name='tickets_list'),
     url(r'^ticket/create/$', secure_func(CreateTicketView.as_view()), name='tickets_create'),
     url(r'^ticket/update/(?P<pk>[0-9]+)$', secure_func(UpdateTicketView.as_view()), name='ticket_update'),   

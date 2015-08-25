@@ -46,6 +46,22 @@ class TicketList(generics.ListAPIView):
         serializer = TicketDetailSerializer(queryset, many=True)
         return Response(serializer.data)
     
+class AllTicketList(generics.ListAPIView):
+    
+    serializer_class = TicketDetailSerializer
+
+    def get_queryset(self):
+        return Ticket.objects.all()
+    
+    def get(self, request):
+        return self.list(request)
+    
+    def list(self, request):
+        # Note the use of `get_queryset()` instead of `self.queryset`     
+        queryset = Ticket.objects.all()
+        serializer = TicketDetailSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
 class TicketHistory(generics.ListAPIView):
      
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -80,9 +96,12 @@ class UpdateTicketView(UpdateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     
-    def post(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
         kwargs['partial'] = True
-        return self.put(request, *args, **kwargs)
+        return UpdateAPIView.put(self, request, *args, **kwargs)
+    def patch(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return UpdateAPIView.patch(self, request, *args, **kwargs)
     
 class AddTicketComment(CreateAPIView):
     model = TicketComment
@@ -119,7 +138,8 @@ def roles(request):
         return HttpResponse(status = HTTP_403_FORBIDDEN)
     
     try:
-        data = [{'first_name': role.first_name, \
+        data = [{'username':role.username,\
+                 'first_name': role.first_name, \
                 'last_name': role.last_name,\
                 'role': TICKET_ROLE.name(role.role),\
                 'department': TICKET_DEPARTMENT.name(role.department),

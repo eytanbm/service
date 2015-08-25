@@ -51,3 +51,7 @@ class TicketRole(models.Model):
     def last_name(self):
         return self.user.last_name
     
+    @property
+    def username(self):
+        return self.user.username
+    
