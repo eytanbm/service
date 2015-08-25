@@ -33,7 +33,7 @@ from service_calls.models.ticket_comment import TicketComment
 from service_calls.models.ticket_event import TicketEvent
 from service_calls.models.ticket_role import TicketRole
 from service_calls.settings import BASE_DIR
-
+from django.views.static import serve
 
 class TicketList(generics.ListAPIView):
     
@@ -221,4 +221,7 @@ def download_ticket_files(request):
     zipdir(FILES_ROOT, zipf)
     zipf.close()
     clean_folder(FILES_ROOT)
+    
+    return serve(request, os.path.basename(zip_filename), os.path.dirname(zip_filename))
+    
     
