@@ -30,6 +30,7 @@ urlpatterns = patterns('service_calls.api.views',
     url(r'^role/(?P<role_id>[0-9]+)$', csrf_exempt(role_info), name='role_name'),   
     url(r'^roles/$', csrf_exempt(roles), name='roles'), 
     url(r'^files/$', 'upload_ticket_file', name='Ticket Files'),
-    url(r'^ticketfiles/$', 'download_ticket_files', name='Ticket Files Download'),
+    url(r'^ticketfiles/(?P<pk>[0-9]+)$', 'download_ticket_files', name='Ticket Files Download'),
+    url(r'^allticketfiles/$', 'download_all_ticket_files', name='Ticket Files Download'),
       
     )

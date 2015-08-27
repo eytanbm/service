@@ -196,7 +196,27 @@ def upload_ticket_file(request,):
     return render(request, 'ticket_file_upload.html', {'form': form})
         
 @api_view(['GET', 'POST'])
-def download_ticket_files(request):
+def download_ticket_files(request, pk):
+
+    def ticket_file_name(path):
+        ticket_dir, file_name = ntpath.split(path)
+        return "_".join([ntpath.split(ticket_dir)[1], file_name])
+
+    def zipdir(path, zip):
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                zip.write(file_path, arcname=ticket_file_name(file_path))
+
+    zip_filename = os.path.join(BASE_DIR, 'ticket_files_%s.zip' % pk)
+    zipf = zipfile.ZipFile(zip_filename, 'w')
+    zipdir(os.path.join(FILES_ROOT, pk), zipf)
+    zipf.close()
+    
+    return serve(request, os.path.basename(zip_filename), os.path.dirname(zip_filename))
+        
+@api_view(['GET', 'POST'])
+def download_all_ticket_files(request):
     def clean_folder(folder):
         for path in os.listdir(folder):
             file_path = os.path.join(folder, path)
@@ -220,7 +240,7 @@ def download_ticket_files(request):
     zipf = zipfile.ZipFile(zip_filename, 'w')
     zipdir(FILES_ROOT, zipf)
     zipf.close()
-    clean_folder(FILES_ROOT)
+#     clean_folder(FILES_ROOT)
     
     return serve(request, os.path.basename(zip_filename), os.path.dirname(zip_filename))
     
