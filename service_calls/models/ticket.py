@@ -21,7 +21,7 @@ class Ticket(models.Model):
     type = models.IntegerField(choices=TICKET_TYPE.to_choices(), default=TICKET_TYPE.Problem)
     source = models.IntegerField(choices=TICKET_SOURCE.to_choices(), default=TICKET_SOURCE.Maintenance)
     priority = models.IntegerField(choices=TICKET_PRIORITY.to_choices(), default=TICKET_PRIORITY.Normal)    
-    status = models.IntegerField(choices=TICKET_STATUS.to_choices(), default=TICKET_STATUS.Reported)  
+    status = models.IntegerField(choices=TICKET_STATUS.to_choices(), default=TICKET_STATUS.Created)  
     owner = models.ForeignKey(TicketRole, null=True, blank=True, related_name="tickets")
     initiator = models.ForeignKey(TicketRole, null=False, blank=False, related_name="initiated_tickets")
     created = models.DateTimeField(auto_now_add=True)
@@ -65,9 +65,9 @@ class Ticket(models.Model):
     def __setattr__(self, name, value):
         super(Ticket, self).__setattr__(name, value)
         if name == 'owner_id' and value:
-            owner_role = TicketRole.objects.get(id=value).role
-            if owner_role in TICKET_ROLE_STATUS.keys():
-                super(Ticket, self).__setattr__('status', TICKET_ROLE_STATUS[owner_role])
+            super(Ticket, self).__setattr__('status', TICKET_STATUS.Assigned)
+        if name == 'owner_id' and value is None:
+            super(Ticket, self).__setattr__('status', TICKET_STATUS.Created)
     
     def _save_change_event(self):
         changes = self.whats_changed()
