@@ -64,10 +64,10 @@ class Ticket(models.Model):
     
     def __setattr__(self, name, value):
         super(Ticket, self).__setattr__(name, value)
-        if name == 'owner_id' and value:
-            super(Ticket, self).__setattr__('status', TICKET_STATUS.Assigned)
-        if name == 'owner_id' and value is None:
-            super(Ticket, self).__setattr__('status', TICKET_STATUS.Created)
+#         if name == 'owner_id' and value:
+#             super(Ticket, self).__setattr__('status', TICKET_STATUS.Assigned)
+#         if name == 'owner_id' and value is None:
+#             super(Ticket, self).__setattr__('status', TICKET_STATUS.Created)
     
     def _save_change_event(self):
         changes = self.whats_changed()
