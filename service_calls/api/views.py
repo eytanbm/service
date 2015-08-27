@@ -103,9 +103,13 @@ class UpdateTicketView(UpdateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
     
+    def post(self, request, *args, **kwargs):
+        return self.put(request, *args, **kwargs)
+    
     def put(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return UpdateAPIView.put(self, request, *args, **kwargs)
+    
     def patch(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return UpdateAPIView.patch(self, request, *args, **kwargs)
